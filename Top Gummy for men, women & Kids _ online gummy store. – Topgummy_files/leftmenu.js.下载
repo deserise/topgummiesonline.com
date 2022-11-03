@@ -1,0 +1,9 @@
+// Left slider menu
+ $(document).ready(function() {
+      $('.drawer').drawer();
+    });
+//
+ $(".menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });

@@ -1,0 +1,2 @@
+$(document).ready(function(){if($(".brands_slider").length){var e=$(".brands_slider");if(e.owlCarousel({loop:!1,autoplay:!0,autoplayTimeout:5e3,nav:!1,dots:!1,autoWidth:!0,items:4,margin:35}),$(".brands_prev").length){var a=$(".brands_prev");a.on("click",function(){e.trigger("prev.owl.carousel")})}if($(".brands_next").length){var n=$(".brands_next");n.on("click",function(){e.trigger("next.owl.carousel")})}}});
+//# sourceMappingURL=/s/files/1/0471/9506/2427/t/5/assets/logo-slider.js.map?v=56834039890930126261602407596

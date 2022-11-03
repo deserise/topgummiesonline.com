@@ -1,0 +1,9 @@
+/*!
+ * hoverIntent v1.8.1 // 2014.08.11 // jQuery v1.9.1+
+ * http://briancherne.github.io/jquery-hoverIntent/
+ *
+ * You may use hoverIntent under the terms of the MIT license. Basically that
+ * means you are free to use hoverIntent as long as this header is left intact.
+ * Copyright 2007, 2014 Brian Cherne
+ */(function(o){"use strict";typeof define=="function"&&define.amd?define(["jquery"],o):jQuery&&!jQuery.fn.hoverIntent&&o(jQuery)})(function(o){"use strict";var y={interval:100,sensitivity:6,timeout:0},X=0,a,f,c=function(t){a=t.pageX,f=t.pageY},m=function(t,u,e,r){if(Math.sqrt((e.pX-a)*(e.pX-a)+(e.pY-f)*(e.pY-f))<r.sensitivity)return u.off(e.event,c),delete e.timeoutId,e.isActive=!0,t.pageX=a,t.pageY=f,delete e.pX,delete e.pY,r.over.apply(u[0],[t]);e.pX=a,e.pY=f,e.timeoutId=setTimeout(function(){m(t,u,e,r)},r.interval)},Y=function(t,u,e,r){return delete u.data("hoverIntent")[e.id],r.apply(u[0],[t])};o.fn.hoverIntent=function(t,u,e){var r=X++,i=o.extend({},y);o.isPlainObject(t)?(i=o.extend(i,t),o.isFunction(i.out)||(i.out=i.over)):o.isFunction(u)?i=o.extend(i,{over:t,out:u,selector:e}):i=o.extend(i,{over:t,out:t,selector:u});var I=function(l){var p=o.extend({},l),v=o(this),s=v.data("hoverIntent");s||v.data("hoverIntent",s={});var n=s[r];n||(s[r]=n={id:r}),n.timeoutId&&(n.timeoutId=clearTimeout(n.timeoutId));var d=n.event="mousemove.hoverIntent.hoverIntent"+r;if(l.type==="mouseenter"){if(n.isActive)return;n.pX=p.pageX,n.pY=p.pageY,v.off(d,c).on(d,c),n.timeoutId=setTimeout(function(){m(p,v,n,i)},i.interval)}else{if(!n.isActive)return;v.off(d,c),n.timeoutId=setTimeout(function(){Y(p,v,n,i.out)},i.timeout)}};return this.on({"mouseenter.hoverIntent":I,"mouseleave.hoverIntent":I},i.selector)}});
+//# sourceMappingURL=/s/files/1/0471/9506/2427/t/5/assets/hoverIntent.js.map?v=49953099345800402991601017366
