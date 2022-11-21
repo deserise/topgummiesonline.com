@@ -1,0 +1,103 @@
+function setCookie(key,val){
+    let now = new Date()
+    now.setMinutes(now.getMinutes() + 60 * 24)
+    document.cookie=`${key}=${encodeURI(val)};expires=${now.toUTCString()}`
+}
+function getCookie(key){
+    let obj = {}
+    document.cookie.split("; ").forEach(item=>{
+        let kv = item.split("=")
+        obj[kv[0]] = decodeURI(kv[1])
+    })
+    if(key){
+        let res = null
+        try{
+            res = JSON.parse(obj[key])
+        }catch{
+            res = obj[key]
+        }finally{
+            return res
+        }
+    }
+    return obj
+}
+function GetQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]);
+    return null;
+}
+
+var media = GetQueryString("media");
+var bemobdata_string = GetQueryString("bemobdata");
+var bemobdata = {};
+if(bemobdata_string){
+    var b2 = bemobdata_string.split("..")
+    var bemobdata = {};
+    for(var i = 0;i < b2.length;i++){
+        var b3 = b2[i].split("=");
+        bemobdata[b3[0]] = b3[1];
+    }
+}
+
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "bfbkm6mqvx");
+
+function Track(){
+    this.is_interest_active = getCookie('interest_active')
+}
+
+Track.prototype.interest = function(){
+    this.is_interest_active = this.is_interest_active ? this.is_interest_active : getCookie('interest_active');
+    if(!this.is_interest_active){
+        setCookie('interest_active','1');
+        this.is_interest_active = 1;
+        if(this.interest_callback) this.interest_callback();
+    }
+}
+
+Track.prototype.interject = function(){
+    this.is_interject_active = this.is_interject_active ? this.is_interject_active : getCookie('interject_active');
+    if(!this.is_interject_active){
+        setCookie('interject_active','1');
+        this.is_interject_active = 1;
+        if(this.interject_callback) this.interject_callback();
+    }
+}
+
+Track.prototype.init = function(){
+    this.interest_heigth = 800;
+    var that = this;
+    window.onscroll = function(){
+        var scroll_heigth = document.documentElement.scrollTop || document.body.scrollTop;
+        if (scroll_heigth > that.interest_heigth) {
+            that.interest();
+        }
+    }
+    $(".cta-btn").on("click",function(){
+        that.interject();
+    });
+}
+
+Track.prototype.track = function(media,clickid,event){
+    $.get("https://api.purely.fit/track.php?media="+media+"&event="+event+"&clickid="+clickid);
+}
+
+if(media){
+    if(media == "Taboola" || media == "Outbrain" || media == "MGID"){
+        var clickid =  bemobdata.e;
+        Track.prototype.interest_callback = function(){
+            this.track(media,clickid,'interest');
+            console.log("interest");
+        }
+        Track.prototype.interject_callback = function(){
+            this.track(media,clickid,'interject');
+            console.log("interject");
+        }
+    }
+}
+
+
